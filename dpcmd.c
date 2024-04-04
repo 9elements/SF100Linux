@@ -31,7 +31,7 @@ unsigned int g_uiAddr = 0;
 size_t g_uiLen = 0;
 unsigned int g_ucFill = 0xFF;
 unsigned int g_ucTarget = 1;
-unsigned int g_uiTimeout = 3000;
+unsigned int g_uiTimeout = 10000;
 unsigned int g_ucSPIClock = clk_12M;
 unsigned int g_uiBlink = 0;
 unsigned int g_uiDevNum = 0;
@@ -183,7 +183,7 @@ struct option long_options[] = {
 };
 
 int OpenUSB(void);
-#if 0 //evy test SF700
+#if 0 
 int verbose = 1;
 
 void print_endpoint(struct usb_endpoint_descriptor *endpoint)
@@ -501,7 +501,7 @@ int main(int argc, char* argv[])
     unsigned long r;
     char* env;
 
-    printf("\nDpCmd Linux 1.14.17.%02d Engine Version:\nLast Built on %s\n\n", GetConfigVer(), __DATE__); // 1. new feature.bug.configS
+    printf("\nDpCmd Linux 1.14.20.%02d Engine Version:\nLast Built on %s\n\n", GetConfigVer(), __DATE__); // 1. new feature.bug.configS
 
     g_ucOperation = 0;
     GetLogPath(g_LogPath);
@@ -1451,7 +1451,7 @@ bool CheckProgrammerInfo(void)
         uiFPGAVer = GetFPGAVersion(g_uiDevNum - 1);
         GetFirmwareVer(g_uiDevNum - 1);
         if (g_bIsSF600[g_uiDevNum - 1]) {
-            if (CheckSDCard(g_uiDevNum - 1i))
+            if (CheckSDCard(g_uiDevNum - 1))
                 printf("        Programmer type : SF600Plus\n");
             printf("        Programmer type : SF600Plus\n");
             printf("        Firmware version : %s\n", g_FW_ver);
