@@ -10,7 +10,6 @@
     <!-- For all parameter values below, all sizes are represented in decimal, while instructions hexdecimal -->
 
 
-    
 <Chip TypeName="Alverstone-128M(Top)"
     ICType="SPI_NOR"
     Class="Alverstone"
@@ -16158,37 +16157,6 @@ RDIDCommand="0x9F"/>
     ProgramIOMethod="SPSD_RSW"
     IDNumber="3"
 	RDIDCommand="0x9F"/>
-<!-- Specifications
-    XM25RH256C
-
-    Density 256Mbit
-    Status P
-    Vcc 2.3V-3.6V
-    Speed 108MHz (x1, x2, x4) QPI
-    Temperature -40°C~+85°C
-    Packages SOP-8 208, SOP-16 300, WSON 5x6 8L, WSON 6x8 8L
-    Key Features
-
-    •single voltage supply
-    -voltage: 2.7v to 3.6v
-    •high performance serial flash (spi)
-    -maximum to 108mhz for fast read operation
-    -continuous read 8/16/32/64 byte burst wrap
-    -qpi for reduced instruction overhead
-    •flexible memory architecture
-    -sector size: 4k bytes
-    -block size: 32/64k bytes
-    •advanced security feature
-    -64-bit unique id for each device
-    -3x256-bytes dedicated security area with otp user-lockable bits
-    -replay protection monotonic counter(rpmc) 
-    
-    JEDEC ID: 0x204319
-    Size(KB): 32768
-    Page(B): 256
-    Sector(B): 4096
-
-    -->
 <Chip TypeName="XM25RH256C"
     ICType="SPI_NOR"
     Class="W25Pxx_Large"
