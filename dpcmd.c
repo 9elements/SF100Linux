@@ -45,7 +45,7 @@ unsigned int g_uiDevNum = 0;
 unsigned int g_uiDeviceID = 0;
 unsigned int g_IO1Select = 0;
 unsigned int g_IO4Select = 1;
-char g_strTypeName[64] = "\0";
+char strTypeName[1024] = "\0";
 
 bool g_bEnableVpp = false;
 int g_StartupMode = STARTUP_APPLI_SF_1;
@@ -907,11 +907,11 @@ int main(int argc, char* argv[])
                 }
                 int dwUID = ReadUID(g_uiDevNum - 1);
                 if (is_SF700_Or_SF600PG2(g_uiDevNum - 1)) {
-		    		if (g_bIsSF700[g_uiDevNum - 1] == true) {
+		    if (g_bIsSF700[g_uiDevNum - 1] == true) {
                         printf("\nDevice %d (SF7%05d):\tdetecting chip\n", g_uiDevNum, dwUID);
                     } else if (g_bIsSF600PG2[g_uiDevNum - 1] == true) {
                         printf("\nDevice %d (S6B%05d):\tdetecting chip\n", g_uiDevNum, dwUID);
-		    	}
+		    }
                 } else if ((g_bIsSF600[g_uiDevNum - 1] == true) && (dwUID / 600000) > 0) {
                     printf("\nDevice %d (SF%06d):\tdetecting chip\n", g_uiDevNum, dwUID);
                 } else if ((dwUID / 100000) > 0) {
@@ -920,10 +920,10 @@ int main(int argc, char* argv[])
                     printf("\nDevice %d (DP%06d):\tdetecting chip\n", g_uiDevNum, dwUID);
                 }
                 WriteLog(iExitCode, true);
-                g_ChipInfo = GetFirstDetectionMatch(g_strTypeName, g_uiDevNum - 1);
+                g_ChipInfo = GetFirstDetectionMatch(strTypeName, g_uiDevNum - 1);
                 if (g_ChipInfo.UniqueID != 0) {
-                    if (strlen(g_strTypeName)) {
-                        printf("By reading the chip ID, the chip applies to [ %s ]\n\n", g_strTypeName);
+                    if (strlen(strTypeName)) {
+                        printf("By reading the chip ID, the chip applies to [ %s ]\n\n", strTypeName);
                         printf("%s chip size is %zd bytes.\n", g_ChipInfo.TypeName, g_ChipInfo.ChipSizeInByte);
                     } else {
                         printf("%s", msg_err_identifychip);
@@ -952,11 +952,10 @@ int main(int argc, char* argv[])
                         printf("\nDevice %d (DP%06d):\tdetecting chip\n", i + 1, dwUID);
                     }
                     WriteLog(iExitCode, true);
-                    g_ChipInfo = GetFirstDetectionMatch(g_strTypeName, i);
-					printf("type = %s\n\r",g_ChipInfo.ICType);
+                    g_ChipInfo = GetFirstDetectionMatch(strTypeName, i);
                     if (g_ChipInfo.UniqueID != 0) {
-                        if (strlen(g_ChipInfo.TypeName/* g_strTypeName*/)) {
-                            printf("By reading the chip ID, the chip applies to [ %s ]\n", g_strTypeName);
+                        if (strlen(strTypeName)) {
+                            printf("By reading the chip ID, the chip applies to [ %s ]\n", strTypeName);
                             printf("%s chip size is %zd bytes.\n", g_ChipInfo.TypeName, g_ChipInfo.ChipSizeInByte);
                         } else {
                             printf("%s", msg_err_identifychip);
@@ -971,12 +970,12 @@ int main(int argc, char* argv[])
         } else if (g_uiDevNum != 0) {
             WriteLog(iExitCode, true);
             printf("%d,\tdetecting chip\n", g_uiDevNum);
-            g_ChipInfo = GetFirstDetectionMatch(g_strTypeName, g_uiDevNum - 1);
+            g_ChipInfo = GetFirstDetectionMatch(strTypeName, g_uiDevNum - 1);
 
             if (g_ChipInfo.UniqueID != 0) {
-                //printf("strlen(g_strTypeName)=%ld\n",strlen(g_strTypeName));
-                if (strlen(g_strTypeName)) {
-                    printf("  \tBy reading the chip ID, the chip applies to [ %s ]\n\n", g_strTypeName);
+                //printf("strlen(strTypeName)=%ld\n",strlen(strTypeName));
+                if (strlen(strTypeName)) {
+                    printf("  \tBy reading the chip ID, the chip applies to [ %s ]\n\n", strTypeName);
                     printf("  \t%s chip size is %zd bytes.\n", g_ChipInfo.TypeName, g_ChipInfo.ChipSizeInByte);
                 } else {
                     printf("%s", msg_err_identifychip);
@@ -1448,7 +1447,7 @@ bool InitProject(void)
 {
     //printf("bool InitProject(void)\n");
     int dev_cnt = get_usb_dev_cnt();
-	if (Is_usbworking(0) == true) {
+if (Is_usbworking(0) == true) {
 //    if (Is_usbworking(g_uiDevNum-1)) {
         int targets[4] = {
             STARTUP_APPLI_CARD,
@@ -1464,7 +1463,7 @@ bool InitProject(void)
                 SetSPIIOMode(i);
                 SetSPIClock(i);
                 SetVcc(i);
-				SetVppVoltage(0,i);
+		SetVppVoltage(0,i);
 
                 if (strlen(g_parameter_type) > 0) {
                     if (Dedi_Search_Chip_Db_ByTypeName(g_parameter_type, &g_ChipInfo)) {
@@ -1484,11 +1483,11 @@ bool InitProject(void)
             }
         } else if (g_uiDevNum <= dev_cnt) {
             g_StartupMode = targets[g_ucTarget];
-			SetTargetFlash((unsigned char)targets[g_ucTarget], g_uiDevNum - 1);
-			SetSPIIOMode(g_uiDevNum - 1);
+            SetTargetFlash((unsigned char)targets[g_ucTarget], g_uiDevNum - 1);
+	    SetSPIIOMode(g_uiDevNum - 1);
             SetSPIClock(g_uiDevNum - 1);
             SetVcc(g_uiDevNum - 1);
-            SetVppVoltage(0,g_uiDevNum - 1);
+	    SetVppVoltage(0,g_uiDevNum - 1);
 
             if (strlen(g_parameter_type) > 0) {
                 if (Dedi_Search_Chip_Db_ByTypeName(g_parameter_type, &g_ChipInfo)) {
@@ -1504,7 +1503,7 @@ bool InitProject(void)
                 ProjectInit(g_uiDevNum - 1);
             }
         } else
-        printf("Error: Did not find the programmer.\n");
+            printf("Error: Did not find the programmer.\n");
  
         return true;
     } 
@@ -1522,7 +1521,7 @@ void CloseProject(void)
 bool DetectChip(void)
 {
     int dev_cnt = get_usb_dev_cnt();
-    g_ChipInfo = GetFirstDetectionMatch(g_strTypeName, ((g_uiDevNum>0)? (g_uiDevNum-1):0));
+    g_ChipInfo = GetFirstDetectionMatch(strTypeName, 0);
     if (g_uiDevNum == 0) {
         for (int i = 0; i < dev_cnt; i++) {
             if (!Is_usbworking(i)) {
@@ -1533,7 +1532,7 @@ bool DetectChip(void)
                 printf("%s", msg_err_identifychip);
                 return false;
             }
-            printf("By reading the chip ID, the chip applies to [ %s ]\n\n", g_strTypeName);
+            printf("By reading the chip ID, the chip applies to [ %s ]\n\n", strTypeName);
             printf("%s parameters to be applied by default\n", g_ChipInfo.TypeName);
             printf("%s chip size is %zd bytes.\n\n", g_ChipInfo.TypeName, g_ChipInfo.ChipSizeInByte);
 
@@ -2477,7 +2476,7 @@ int FlashIdentifier(CHIP_INFO* Chip_Info, int search_all, int Index)
         UniqueID = flash_ReadId(0x9f, 3, Index);
         if (UniqueID != 0) {
             rc = Dedi_Search_Chip_Db(TypeName, 0x9f, UniqueID, Chip_Info, search_all);
-            strcpy(g_strTypeName, TypeName);
+            strcpy(strTypeName, TypeName);
             if (rc && (search_all == 0)) {
                 if (c == 1)
                     isSendFFsequence = true; 

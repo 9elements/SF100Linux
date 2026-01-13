@@ -58,7 +58,7 @@ extern unsigned int g_uiAddr;
 extern size_t g_uiLen;
 extern bool g_bEnableVpp;
 extern unsigned int g_uiDevNum;
-extern char g_strTypeName[64];
+extern char strTypeName[1024];
 extern bool g_bIsNANDFlash;
 extern bool g_bSpareAreaUseFile;
 extern struct CNANDContext g_NANDContext;
@@ -1484,10 +1484,7 @@ CHIP_INFO GetFirstDetectionMatch(char* TypeName, int Index)
     if (Found == 0) {
         binfo.UniqueID = 0;
         binfo.TypeName[0] = '\0';
-		TypeName[0] = '\0';
     }
-	else
-		memcpy(TypeName,binfo.TypeName, sizeof(binfo.TypeName));
 
     return binfo; //*TypeName;
 }
@@ -1801,7 +1798,7 @@ bool ProjectInitWithID(CHIP_INFO chipinfo, int Index) // by designated ID
 
 bool ProjectInit(int Index) // by designated ID
 {
-    g_ChipInfo = GetFirstDetectionMatch(g_strTypeName, Index);
+    g_ChipInfo = GetFirstDetectionMatch(strTypeName, Index);
     if (g_ChipInfo.UniqueID == 0) {
         return false;
     }
