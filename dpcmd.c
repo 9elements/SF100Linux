@@ -533,13 +533,19 @@ int GetConfigVer()
         return 1;
 	}
   
-	doc = xmlParseFile(file_path);
+	// ChipInfoDb.dedicfg is UTF-16LE but declares encoding="unicode",
+	// which libxml2 doesn't recognise, so force the real encoding.
+	doc = xmlReadFile(file_path, "UTF-16LE", 0);
+	if (doc == NULL)
+		return 1;
 	cur_node = xmlDocGetRootElement(doc); // DediProgChipDatabase
 	while (cur_node != NULL) {
       if ((!xmlStrcmp(cur_node->name, (const xmlChar *)"DediProgChipDatabase"))) {
 	  	chip_attribute = xmlGetProp(cur_node, (const xmlChar *)"Ver");
-		Ver = strtol((char*)chip_attribute, NULL, 10);
-	    xmlFree(chip_attribute);
+		if (chip_attribute != NULL) {
+			Ver = strtol((char*)chip_attribute, NULL, 10);
+			xmlFree(chip_attribute);
+		}
       	}
 	  	
 	  	cur_node = cur_node->next;
